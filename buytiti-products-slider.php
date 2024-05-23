@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Buytiti - Product- Slider 
  * Plugin URI:        https://buytiti.com
- * Description:       Plugin para mostrar productos de Buytiti sin API
+ * Description:       Plugin para mostrar productos de Buytiti sin API renderizados como slider/carrusel
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.13
@@ -19,49 +19,61 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Función para obtener productos publicados con stock por categoría y cantidad
-function buytiti_get_woocommerce_products_in_stock( $category = '', $cantidad = 10 , $bestsellers = 'false') {
+function buytiti_get_woocommerce_products_bs_in_stock( $category = '', $cantidad = 10 , $bestsellers = 'false') {
     if ( $cantidad == -1 ) {
-        $cantidad = -1; // Mostrar todos los productos
-    }
-
-    $args = array(
-        'post_type'      => 'product',
-        'posts_per_page' => $cantidad,
-        'post_status'    => 'publish',
-        'meta_query'     => array(
-            array(
-                'key'     => '_stock_status',
-                'value'   => 'instock',
-                'compare' => '='
-            )
-        ),
-        // 'orderby'        => 'post_date_gmt', // Ordenar por fecha de creación
-        // 'order'          => 'DESC', // Orden descendente
-    );
-    if ( filter_var($bestsellers, FILTER_VALIDATE_BOOLEAN) ) {
-        $args['meta_key'] = 'total_sales';
-        $args['orderby'] = 'meta_value_num';
-        $args['order'] = 'DESC';
-    } else {
-        $args['orderby'] = 'post_date_gmt';
-        $args['order'] = 'DESC';
-    }
-    if ( ! empty( $category ) ) {
-        $args['tax_query'] = array(
-            array(
-                'taxonomy' => 'product_cat',
-                'field'    => 'slug',
-                'terms'    => $category, // Filtrar por categoría
-            ),
-        );
-    }
-
-    $query = new WP_Query($args);
-
-    return $query->posts;
-}
+         $cantidad = -1; // Mostrar todos los productos
+     }
+ 
+     $args = array(
+         'post_type'      => 'product',
+         'posts_per_page' => $cantidad,
+         'post_status'    => 'publish',
+         'meta_query'     => array(
+             array(
+                 'key'     => '_stock_status',
+                 'value'   => 'instock',
+                 'compare' => '='
+             )
+         ),
+     );
+ 
+     if ( filter_var($bestsellers, FILTER_VALIDATE_BOOLEAN) ) {
+         // Obtener la fecha de 15 días atrás
+         $date_15_days_ago = date('Y-m-d H:i:s', strtotime('-15 days'));
+ 
+         // Filtrar por productos vendidos en los últimos 15 días
+         $args['date_query'] = array(
+             array(
+                 'column' => 'post_date_gmt',
+                 'after'  => $date_15_days_ago
+             )
+         );
+ 
+         $args['meta_key'] = 'total_sales';
+         $args['orderby'] = 'meta_value_num';
+         $args['order'] = 'DESC';
+     } else {
+         $args['orderby'] = 'post_date_gmt';
+         $args['order'] = 'DESC';
+     }
+ 
+     if ( ! empty( $category ) ) {
+         $args['tax_query'] = array(
+             array(
+                 'taxonomy' => 'product_cat',
+                 'field'    => 'slug',
+                 'terms'    => $category, // Filtrar por categoría
+             ),
+         );
+     }
+ 
+     $query = new WP_Query($args);
+ 
+     return $query->posts;
+ }
+ 
 // Encolar Slick Carousel y estilos
-function buytiti_enqueue_scripts() {
+function buytiti_enqueue_scripts_to_slider() {
     // Asegurarse de que jQuery está encolado
     wp_enqueue_script('jquery');
 
@@ -73,7 +85,7 @@ function buytiti_enqueue_scripts() {
     wp_enqueue_style('slick-theme-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css');
 
     // Estilos personalizados
-    $custom_css = "
+    $custom_css_prod = "
         .slick-hidden {
             display: none;
         }
@@ -375,13 +387,13 @@ function buytiti_enqueue_scripts() {
     ";
 
     // Añadir estilos en línea después de Slick CSS
-    wp_add_inline_style('slick-css', $custom_css);
+    wp_add_inline_style('slick-css', $custom_css_prod);
 }
 
-add_action('wp_enqueue_scripts', 'buytiti_enqueue_scripts');
+add_action('wp_enqueue_scripts', 'buytiti_enqueue_scripts_to_slider');
 
 // Función para mostrar el slider
-function get_product_brand($product) {
+function get_product_bs_brand($product) {
     $attributes = $product->get_attributes();
 
     foreach ($attributes as $attribute) {
@@ -397,7 +409,7 @@ function get_product_brand($product) {
 }
 
 // Función para obtener la categoría más profunda
-function get_deepest_category($product_id) {
+function get_deepest_category_in_products($product_id) {
     $terms = get_the_terms($product_id, 'product_cat');
 
     if (empty($terms)) {
@@ -414,15 +426,15 @@ function get_deepest_category($product_id) {
 }
 
 // Modificación del slider para mostrar la marca y la categoría
-function buytiti_product_slider( $atts = array() ) {
+function buytiti_product_bs_slider( $atts = array() ) {
     $atts = shortcode_atts(array(
         'category' => '',
         'cantidad' => 10,
         'bestsellers' => 'false'
-    ), $atts, 'buytiti_slider_sin_api' );
+    ), $atts, 'buytiti_slider_no_api' );
 
     // $products = buytiti_get_woocommerce_products_in_stock($category, $cantidad, $bestsellers);
-    $products = buytiti_get_woocommerce_products_in_stock( $atts['category'], $atts['cantidad'],  $atts['bestsellers'] );
+    $products = buytiti_get_woocommerce_products_bs_in_stock( $atts['category'], $atts['cantidad'],  $atts['bestsellers'] );
 
     if (empty($products)) {
         return '<p>No se encontraron productos en stock.</p>';
@@ -437,8 +449,8 @@ function buytiti_product_slider( $atts = array() ) {
             $product_obj = wc_get_product($product_id);
 
             // Obtener la marca y la categoría más profunda
-            $brand = get_product_brand($product_obj);
-            $deepest_category = get_deepest_category($product_id);
+            $brand = get_product_bs_brand($product_obj);
+            $deepest_category = get_deepest_category_in_products($product_id);
 
             // Obtén todas las imágenes del producto
             $product_images = $product_obj->get_gallery_image_ids();
@@ -520,19 +532,17 @@ if ($product_obj->get_sale_price()) {
                 $total_sales = get_post_meta($product_id, 'total_sales', true);
             ?>
             <div class="buytiti-product">
-                <?php if ($is_new) : ?>
+            <?php if ($atts['bestsellers'] === 'true') : ?>
+                    <img src="https://i0.wp.com/buytiti.com/wp-content/uploads/insignia.png?w=3000&ssl=1" alt="Insignia" class="product-badge-image" />
+                <?php elseif ($is_new) : ?>
                     <div class="product-new-label">Nuevo</div>
                 <?php endif; ?>
 
-                <?php if ($sale_label) : ?>
-        <div class="product-sale-label <?php echo esc_attr($sale_class); ?>">
-            <?php echo esc_html($sale_label); ?>
-        </div>
-    <?php endif; ?>
-     <!-- Mostrar imagen de insignia -->
-     <?php if ($atts['bestsellers'] === 'true') : ?>
-                    <img src="https://i0.wp.com/buytiti.com/wp-content/uploads/insignia.png?w=3000&ssl=1" alt="Insignia" class="product-badge-image" />
-     <?php endif; ?>
+                <?php if ($sale_label && $atts['bestsellers'] !== 'true') : ?>
+                    <div class="product-sale-label <?php echo esc_attr($sale_class); ?>">
+                        <?php echo esc_html($sale_label); ?>
+                    </div>
+                <?php endif; ?>
                 <a href="<?php echo esc_url(get_permalink($product_id)); ?>">
     <img src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" class="product-image-movil-buytiti" data-src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" data-hover="<?php echo esc_url($second_image_url); ?>">
 	<div class="product-stock-buytiti-movil">Disponible: <?php echo esc_html($product_stock); ?></div>
@@ -645,7 +655,7 @@ if ($product_obj->get_sale_price()) {
 
 
 // Shortcode para el slider
-function buytiti_product_slider_shortcode( $atts = array() ) {
-    return buytiti_product_slider( $atts );
+function buytiti_product_bs_slider_shortcode( $atts = array() ) {
+    return buytiti_product_bs_slider( $atts );
 }
-add_shortcode('buytiti_slider_sin_api', 'buytiti_product_slider_shortcode');
+add_shortcode('buytiti_slider_no_api', 'buytiti_product_bs_slider_shortcode');
