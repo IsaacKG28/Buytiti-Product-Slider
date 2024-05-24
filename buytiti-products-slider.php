@@ -388,9 +388,58 @@ function buytiti_enqueue_scripts_to_slider() {
 
     // Añadir estilos en línea después de Slick CSS
     wp_add_inline_style('slick-css', $custom_css_prod);
-}
 
+wp_add_inline_style('slick-css', $custom_css_prod);
+
+// Encolar script de AJAX para añadir al carrito
+$custom_js = "
+jQuery(document).ready(function($) {
+    $('.add-to-cart-form').on('submit', function(e) {
+        e.preventDefault();
+
+        var form = $(this);
+        var productID = form.find('input[name=\"add-to-cart\"]').val();
+        var quantity = form.find('input[name=\"quantity\"]').val();
+
+        $.ajax({
+            type: 'POST',
+            url: '" . admin_url('admin-ajax.php') . "',
+            data: {
+                action: 'buytiti_add_to_cart',
+                product_id: productID,
+                quantity: quantity,
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Producto añadido al carrito');
+                } else {
+                    alert('Error al añadir el producto al carrito');
+                }
+            },
+        });
+    });
+});
+";
+
+wp_add_inline_script('slick-js', $custom_js);
+}
 add_action('wp_enqueue_scripts', 'buytiti_enqueue_scripts_to_slider');
+
+// Manejar solicitud AJAX para añadir al carrito
+function buytiti_add_to_cart_ajax() {
+    $product_id = intval($_POST['product_id']);
+    $quantity = intval($_POST['quantity']);
+
+    $added = WC()->cart->add_to_cart($product_id, $quantity);
+
+    if ($added) {
+        wp_send_json_success();
+    } else {
+        wp_send_json_error();
+    }
+}
+add_action('wp_ajax_buytiti_add_to_cart', 'buytiti_add_to_cart_ajax');
+add_action('wp_ajax_nopriv_buytiti_add_to_cart', 'buytiti_add_to_cart_ajax');
 
 // Función para mostrar el slider
 function get_product_bs_brand($product) {
@@ -563,26 +612,10 @@ if ($product_obj->get_sale_price()) {
                 <?php endif; ?>
 
                 
-                <form class="add-to-cart-form" method="post" action="<?php echo esc_url( wc_get_cart_url() ); ?>">
-                    <input 
-                        type="hidden" 
-                        name="add-to-cart" 
-                        value="<?php echo esc_attr($product_id); ?>"
-                    >
-                    <input 
-                        type="number" 
-                        class="quantity-input" 
-                        name="quantity" 
-                        value="1" 
-                        min="1" 
-                        max="<?php echo esc_attr($product_stock); ?>" 
-                    >
-                    <button 
-                        type="submit" 
-                        class="add-to-cart-button"
-                    >
-                        Añadir al carrito
-                    </button>
+                <form class="add-to-cart-form" method="post">
+                    <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($product_id); ?>">
+                    <input type="number" class="quantity-input" name="quantity" value="1" min="1" max="<?php echo esc_attr($product_stock); ?>">
+                    <button type="submit" class="add-to-cart-button">Añadir al carrito</button>
                 </form>
             </div>
         <?php endforeach; ?>
