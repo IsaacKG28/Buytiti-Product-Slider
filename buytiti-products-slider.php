@@ -723,7 +723,7 @@ if ($product_obj->get_sale_price()) {
                 autoplay: true, 
                 autoplaySpeed: 3000, // Velocidad del autoplay en milisegundos (3 segundos)
                 speed: 300,
-                slidesToShow: 4,
+                slidesToShow: 6,
                 slidesToScroll: 1,
                 responsive: [
                     {
