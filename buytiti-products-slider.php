@@ -21,57 +21,65 @@ if ( ! defined( 'ABSPATH' ) ) {
 // Función para obtener productos publicados con stock por categoría y cantidad
 function buytiti_get_woocommerce_products_bs_in_stock( $category = '', $cantidad = 10 , $bestsellers = 'false') {
     if ( $cantidad == -1 ) {
-         $cantidad = -1; // Mostrar todos los productos
-     }
- 
-     $args = array(
-         'post_type'      => 'product',
-         'posts_per_page' => $cantidad,
-         'post_status'    => 'publish',
-         'meta_query'     => array(
-             array(
-                 'key'     => '_stock_status',
-                 'value'   => 'instock',
-                 'compare' => '='
-             )
-         ),
-     );
- 
-     if ( filter_var($bestsellers, FILTER_VALIDATE_BOOLEAN) ) {
-         // Obtener la fecha de 15 días atrás
-         $date_15_days_ago = date('Y-m-d H:i:s', strtotime('-15 days'));
- 
-         // Filtrar por productos vendidos en los últimos 15 días
-         $args['date_query'] = array(
-             array(
-                 'column' => 'post_date_gmt',
-                 'after'  => $date_15_days_ago
-             )
-         );
- 
-         $args['meta_key'] = 'total_sales';
-         $args['orderby'] = 'meta_value_num';
-         $args['order'] = 'DESC';
-     } else {
-         $args['orderby'] = 'post_date_gmt';
-         $args['order'] = 'DESC';
-     }
- 
-     if ( ! empty( $category ) ) {
-         $args['tax_query'] = array(
-             array(
-                 'taxonomy' => 'product_cat',
-                 'field'    => 'slug',
-                 'terms'    => $category, // Filtrar por categoría
-             ),
-         );
-     }
- 
-     $query = new WP_Query($args);
- 
-     return $query->posts;
- }
- 
+        $cantidad = -1; // Mostrar todos los productos
+    }
+
+    $args = array(
+        'post_type'      => 'product',
+        'posts_per_page' => $cantidad,
+        'post_status'    => 'publish',
+        'meta_query'     => array(
+            array(
+                'key'     => '_stock_status',
+                'value'   => 'instock',
+                'compare' => '='
+            )
+        ),
+    );
+
+    if ( filter_var($bestsellers, FILTER_VALIDATE_BOOLEAN) ) {
+        // Obtener la fecha de 15 días atrás
+        $date_15_days_ago = date('Y-m-d H:i:s', strtotime('-20 days'));
+
+        // Filtrar por productos vendidos en los últimos 15 días
+        $args['date_query'] = array(
+            array(
+                'column' => 'post_date_gmt',
+                'after'  => $date_15_days_ago
+            )
+        );
+
+        // Añadir la condición de que las ventas totales sean mayores a 10
+        $args['meta_query'][] = array(
+            'key'     => 'total_sales',
+            'value'   => '10',
+            'compare' => '>',
+            'type'    => 'NUMERIC'
+        );
+
+        $args['meta_key'] = 'total_sales';
+        $args['orderby'] = 'meta_value_num';
+        $args['order'] = 'DESC';
+    } else {
+        $args['orderby'] = 'post_date_gmt';
+        $args['order'] = 'DESC';
+    }
+
+    if ( ! empty( $category ) ) {
+        $args['tax_query'] = array(
+            array(
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $category, // Filtrar por categoría
+            ),
+        );
+    }
+
+    $query = new WP_Query($args);
+
+    return $query->posts;
+}
+
 // Encolar Slick Carousel y estilos
 function buytiti_enqueue_scripts_to_slider() {
     // Asegurarse de que jQuery está encolado
@@ -83,6 +91,12 @@ function buytiti_enqueue_scripts_to_slider() {
     // Encolar estilos de Slick Carousel
     wp_enqueue_style('slick-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css');
     wp_enqueue_style('slick-theme-css', 'https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css');
+
+    // Encolar estilos de TI WooCommerce Wishlist
+    wp_enqueue_style('ti-woocommerce-wishlist', plugins_url('ti-woocommerce-wishlist/assets/css/style.css'));
+
+    // Encolar scripts de TI WooCommerce Wishlist
+    wp_enqueue_script('ti-woocommerce-wishlist', plugins_url('ti-woocommerce-wishlist/assets/js/frontend.js'), array('jquery'), '', true);
 
     // Estilos personalizados
     $custom_css_prod = "
@@ -272,16 +286,18 @@ function buytiti_enqueue_scripts_to_slider() {
 		}
 
 		.product-sku-movil{
-			color: #00c9b7;
-    font-size: .8rem;
-    font-weight: 700;
-    text-align: center;
+            color: #00c9b7;
+            font-size: .8rem;
+            font-weight: 700;
+            text-align: center;
+            height: 2rem;
+            display: block ruby;
 		}
 
 		.product-name-movil-buytiti{
 			color: #5c5c5c !important;
 			font-size: .9rem !important;
-            height: 5rem;
+            height: 4.2rem;
 			overflow: hidden ;
 			font-weight: 700 !important; 
 		}
@@ -294,6 +310,7 @@ function buytiti_enqueue_scripts_to_slider() {
 			text-align: center;
 			text-transform: uppercase;
             margin-bottom: .5rem;
+            height: 2.5rem;
 		}
 
 		.add-to-cart-button{
@@ -347,6 +364,10 @@ function buytiti_enqueue_scripts_to_slider() {
                 height: 3rem !important;
                 display: block !important;
             }
+                .wp-block-columns .wp-block-column:not(:last-child) {
+                  margin-bottom: 0px !important;
+                }
+              
         }
         
          @media screen and (min-width: 301px) and (max-width: 400px) {
@@ -383,6 +404,73 @@ function buytiti_enqueue_scripts_to_slider() {
             top: 0;
             left: 0;
             width: 2.5rem;
+        }
+        /*Estilos para page favoritos */
+        .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom img, a.wishlist_products_counter.top_wishlist-custom img, span.wishlist_products_counter.top_wishlist-custom img {
+            max-height: 3vh !important;
+            max-width: 6vw !important;
+        }
+        .tinv-header{
+            display: none !important; 
+        }
+        .tinv-wraper.tinv-wishlist {
+            position: absolute !important;
+            right: 5% !important;
+            bottom: 59% !important;
+        }
+        .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt {
+            width: 21px !important;
+        }
+
+        .tinv-wishlist .product-action .button {
+            background-color: #ef7e28 !important;
+        }
+
+        .tinv-wishlist .product-action {
+        width: 175px !important;
+
+        }
+        .tinv-wishlist tfoot .tinvwl-to-right {
+        float: right !important;
+        }
+
+        .tinv-wishlist tfoot .tinvwl-to-right>* {
+        background-color: #ef7e28 !important;
+        }
+        .product-name .tinvwl-full{
+        font-size: 3vh !important;
+        font-weight: bold !important;
+        }
+        td.product-name a {
+            color: #545555 !important;
+            font-weight: bold;
+        }
+        td.product-price span.woocommerce-Price-amount.amount bdi {
+            font-size: 3vh;
+            color: #ef7e28 !important;
+            font-weight: bold;
+        }
+        th.product-price{
+            color: #545555 !important;
+            font-weight: bold;
+            font-size: 3vh;
+        }
+        .wishlist_products_counter_number{
+            font-size:20px !important;
+            color: orange !important;
+        }
+        #block-33 p {
+         margin-bottom: 0em !important;   
+        }
+
+        .woocommerce-js form .form-row label {
+            font-size: 1.3rem !important;
+          }
+
+        @media only screen and (max-width: 768px) {
+            .tinv-wishlist table thead th .tinvwl-mobile {
+                display: none;
+            }
         }
     ";
 
@@ -581,7 +669,7 @@ if ($product_obj->get_sale_price()) {
                 $total_sales = get_post_meta($product_id, 'total_sales', true);
             ?>
             <div class="buytiti-product">
-            <?php if ($atts['bestsellers'] === 'true') : ?>
+                <?php if ($atts['bestsellers'] === 'true') : ?>
                     <img src="https://i0.wp.com/buytiti.com/wp-content/uploads/insignia.png?w=3000&ssl=1" alt="Insignia" class="product-badge-image" />
                 <?php elseif ($is_new) : ?>
                     <div class="product-new-label">Nuevo</div>
@@ -592,26 +680,33 @@ if ($product_obj->get_sale_price()) {
                         <?php echo esc_html($sale_label); ?>
                     </div>
                 <?php endif; ?>
+                
                 <a href="<?php echo esc_url(get_permalink($product_id)); ?>">
-    <img src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" class="product-image-movil-buytiti" data-src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" data-hover="<?php echo esc_url($second_image_url); ?>">
-	<div class="product-stock-buytiti-movil">Disponible: <?php echo esc_html($product_stock); ?></div>
+                    <img src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" class="product-image-movil-buytiti" data-src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" data-hover="<?php echo esc_url($second_image_url); ?>">
+                    
+                    <!-- Botón de agregar a favoritos -->
+                    <div class="ti-wishlist-button">
+                        <?php echo do_shortcode('[ti_wishlists_addtowishlist loop=yes product_id="' . $product_id . '"]'); ?>
+                    </div>
+                    
+                    <div class="product-stock-buytiti-movil">Disponible: <?php echo esc_html($product_stock); ?></div>
 
                     <div class="product-info">
-					<span class="<?php echo esc_attr($sku_class); ?>">SKU: <?php echo esc_html($product_sku); ?></span>
-					 <!-- Mostrar la marca y la categoría -->
-					 <div class="product-brand-category">
-                    <?php echo esc_html($brand); ?> - <?php echo esc_html($deepest_category); ?>
-                </div>
-					<h3 class="<?php echo esc_attr($product_name_class); ?>"><?php echo esc_html($product_name); ?></h3>
-					<span class="<?php echo esc_attr($price_class); ?>"><?php echo wp_kses_post($display_price); ?></span>
+                        <span class="<?php echo esc_attr($sku_class); ?>">SKU: <?php echo esc_html($product_sku); ?></span>
+                        <!-- Mostrar la marca y la categoría -->
+                        <div class="product-brand-category">
+                            <?php echo esc_html($brand); ?> - <?php echo esc_html($deepest_category); ?>
+                        </div>
+                        <h3 class="<?php echo esc_attr($product_name_class); ?>"><?php echo esc_html($product_name); ?></h3>
+                        <span class="<?php echo esc_attr($price_class); ?>"><?php echo wp_kses_post($display_price); ?></span>
                     </div>
                 </a>
-                 <!-- Mostrar el número de ventas -->
-                 <?php if ($atts['bestsellers'] === 'true') : ?>
+                
+                <!-- Mostrar el número de ventas -->
+                <?php if ($atts['bestsellers'] === 'true') : ?>
                     <div class="product-sold-count">Vendidos: <?php echo esc_html($total_sales); ?></div>
                 <?php endif; ?>
 
-                
                 <form class="add-to-cart-form" method="post">
                     <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($product_id); ?>">
                     <input type="number" class="quantity-input" name="quantity" value="1" min="1" max="<?php echo esc_attr($product_stock); ?>">
@@ -692,3 +787,5 @@ function buytiti_product_bs_slider_shortcode( $atts = array() ) {
     return buytiti_product_bs_slider( $atts );
 }
 add_shortcode('buytiti_slider_no_api', 'buytiti_product_bs_slider_shortcode');
+
+// [buytiti_slider_no_api category="" cantidad="40" bestsellers="true"]
