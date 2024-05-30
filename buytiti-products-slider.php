@@ -154,16 +154,17 @@ function buytiti_enqueue_scripts_to_slider() {
 			font-weight: 700;
 			color: red;
 		}
-
-		.product-image-movil-buytiti{
-	 		max-width: 140px !important;
+        .product-image-movil-buytiti {
+            margin-right: auto;
+            max-width: 180px !important;
             height: auto;
-            margin-top: 2.5rem !important;
+            max-height: 180px !important;
+            margin-top: 1.2rem !important;
             transition: 1s;
-            margin-bottom: 3.2rem !important;
-            margin: auto;
+            margin-bottom: 2rem !important;
             transition: 1s;
-		}	
+            margin-left: auto;
+        }
         
         .product-image-movil-buytiti:hover{ 
              transform: scale(1.1);
@@ -172,9 +173,8 @@ function buytiti_enqueue_scripts_to_slider() {
 
         .buytiti-product {
 			position: relative;
-			text-align: center; /* Centrar el contenido */
+			text-align: left; /* Centrar el contenido */
 			border: 1px solid #ddd; /* Bordes para los productos */
-			padding: 10px;
 			border-radius: 20px;
 			height: 30.5rem;
 			width: 14.5rem;
@@ -286,16 +286,16 @@ function buytiti_enqueue_scripts_to_slider() {
 		}
 
 		.product-sku-movil{
-            color: #00c9b7;
+            color: black;
             font-size: .8rem;
             font-weight: 700;
-            text-align: center;
+            text-align: left;
             height: 2rem;
             display: block ruby;
 		}
 
 		.product-name-movil-buytiti{
-			color: #5c5c5c !important;
+			color: black !important;
 			font-size: .9rem !important;
             height: 4.2rem;
 			overflow: hidden ;
@@ -303,38 +303,47 @@ function buytiti_enqueue_scripts_to_slider() {
 		}
 
 		.product-brand-category{
-			color: #8b8b8b !important;
-			font-size: .7rem;
-			font-weight: 600;
+			color: #f07E28 !important;
+			font-size: .8rem;
+			font-weight: bold;
 			letter-spacing: .3px;
-			text-align: center;
+			text-align: left;
 			text-transform: uppercase;
             margin-bottom: .5rem;
             height: 2.5rem;
 		}
 
-		.add-to-cart-button{
-			width: 8rem;
-    justify-content: center;
-    display: flex;
-    margin-left: -2rem;
-    align-items: center;
-    background-color: #ef7e28 !important;
-    height: 2.2rem;
-    right: 0;
-    position: absolute;
-    border-radius: 20px 0px 20px 0px !important;
-    bottom: 0;
-		}
+        .add-to-cart-button {
+            width: 9.2rem;
+            justify-content: center;
+            display: flex;
+            margin-left: -2rem;
+            align-items: center;
+            background-color: white !important;
+            height: 2.2rem;
+            right: 0;
+            position: absolute;
+            bottom: 0;
+            color: black;
+            border-width: 2px;
+            border-style: solid;
+            border-color: black;
+            border-radius: 10px !important;
+        }
 
-		.quantity-input{
-			position: absolute;
-			left: 0;
-			bottom: 0;
-			border-radius: 0px 10px 0px 20px !important;
-			height: 2rem !important;
-			max-width: 70px !important;
-		}
+        .quantity-input {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            border-radius: 10px !important;
+            height: 2rem !important;
+            width: 90px !important;
+            max-width: none !important;
+            border-style: solid !important;
+            border-color: black !important;
+            border-width: 2px !important;
+            font-weight: bold !important;
+        }
 		.product-regular-price-tachado {
 			text-decoration: line-through; /* Asegurarse de que esté tachado */
 			color: #999; /* Color para el precio regular cuando está tachado */
@@ -343,7 +352,7 @@ function buytiti_enqueue_scripts_to_slider() {
 		.product-regular-price{
 			font-size: 1.3rem;
             font-weight: 700;
-            color: #ff7942;
+            color: #f07E28;
 		}
         
         @media (max-width: 980px) {
@@ -351,7 +360,7 @@ function buytiti_enqueue_scripts_to_slider() {
                 height: 33.5rem !important;
             }
             .product-name-movil-buytiti{
-                color: #5c5c5c !important;
+                
                 font-size: .8rem !important;
                 height: 4rem;
                 margin-bottom: 0px !important;
@@ -370,18 +379,23 @@ function buytiti_enqueue_scripts_to_slider() {
               
         }
         
-         @media screen and (min-width: 301px) and (max-width: 400px) {
+         @media screen and (min-width: 301px) and (max-width: 420px) {
                   .buytiti-product {
 			            height: 33.5rem !important;
                   }
                   
                   .add-to-cart-button {
-                      width: 6.8rem;
+                      width: 7.6rem;
                       font-size: .8rem;
                   }
                   .product-discount-buytiti {
-                         top: 6%;
+                         top: 2.5rem;
                    }
+                   .quantity-input {
+                    height: 2.2rem !important;
+                    min-height: none !important
+                    width: 60px ;
+                }
                   
         }
         /* Estilos para la etiqueta de Vendidos */
@@ -416,7 +430,7 @@ function buytiti_enqueue_scripts_to_slider() {
         .tinv-wraper.tinv-wishlist {
             position: absolute !important;
             right: 5% !important;
-            bottom: 59% !important;
+            top: 1% !important;
         }
         .tinv-wishlist .tinvwl_add_to_wishlist_button.tinvwl-icon-custom.no-txt {
             width: 21px !important;
@@ -462,11 +476,6 @@ function buytiti_enqueue_scripts_to_slider() {
         #block-33 p {
          margin-bottom: 0em !important;   
         }
-
-        .woocommerce-js form .form-row label {
-            font-size: 1.3rem !important;
-          }
-
         @media only screen and (max-width: 768px) {
             .tinv-wishlist table thead th .tinvwl-mobile {
                 display: none;
@@ -668,52 +677,56 @@ if ($product_obj->get_sale_price()) {
                 // Obtener el número de ventas del producto
                 $total_sales = get_post_meta($product_id, 'total_sales', true);
             ?>
-            <div class="buytiti-product">
-                <?php if ($atts['bestsellers'] === 'true') : ?>
-                    <img src="https://i0.wp.com/buytiti.com/wp-content/uploads/insignia.png?w=3000&ssl=1" alt="Insignia" class="product-badge-image" />
-                <?php elseif ($is_new) : ?>
-                    <div class="product-new-label">Nuevo</div>
-                <?php endif; ?>
+    <div class="buytiti-product">
+        <?php if ($atts['bestsellers'] === 'true') : ?>
+            <img src="https://i0.wp.com/buytiti.com/wp-content/uploads/insignia.png?w=3000&ssl=1" alt="Insignia" class="product-badge-image" />
+        <?php elseif ($is_new) : ?>
+            <div class="product-new-label">Nuevo</div>
+        <?php endif; ?>
 
-                <?php if ($sale_label && $atts['bestsellers'] !== 'true') : ?>
-                    <div class="product-sale-label <?php echo esc_attr($sale_class); ?>">
-                        <?php echo esc_html($sale_label); ?>
-                    </div>
-                <?php endif; ?>
-                
-                <a href="<?php echo esc_url(get_permalink($product_id)); ?>">
-                    <img src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" class="product-image-movil-buytiti" data-src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" data-hover="<?php echo esc_url($second_image_url); ?>">
-                    
-                    <!-- Botón de agregar a favoritos -->
-                    <div class="ti-wishlist-button">
-                        <?php echo do_shortcode('[ti_wishlists_addtowishlist loop=yes product_id="' . $product_id . '"]'); ?>
-                    </div>
-                    
-                    <div class="product-stock-buytiti-movil">Disponible: <?php echo esc_html($product_stock); ?></div>
-
-                    <div class="product-info">
-                        <span class="<?php echo esc_attr($sku_class); ?>">SKU: <?php echo esc_html($product_sku); ?></span>
-                        <!-- Mostrar la marca y la categoría -->
-                        <div class="product-brand-category">
-                            <?php echo esc_html($brand); ?> - <?php echo esc_html($deepest_category); ?>
-                        </div>
-                        <h3 class="<?php echo esc_attr($product_name_class); ?>"><?php echo esc_html($product_name); ?></h3>
-                        <span class="<?php echo esc_attr($price_class); ?>"><?php echo wp_kses_post($display_price); ?></span>
-                    </div>
-                </a>
-                
-                <!-- Mostrar el número de ventas -->
-                <?php if ($atts['bestsellers'] === 'true') : ?>
-                    <div class="product-sold-count">Vendidos: <?php echo esc_html($total_sales); ?></div>
-                <?php endif; ?>
-
-                <form class="add-to-cart-form" method="post">
-                    <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($product_id); ?>">
-                    <input type="number" class="quantity-input" name="quantity" value="1" min="1" max="<?php echo esc_attr($product_stock); ?>">
-                    <button type="submit" class="add-to-cart-button">Añadir al carrito</button>
-                </form>
+        <?php if ($sale_label && $atts['bestsellers'] !== 'true') : ?>
+            <div class="product-sale-label <?php echo esc_attr($sale_class); ?>">
+                <?php echo esc_html($sale_label); ?>
             </div>
-        <?php endforeach; ?>
+        <?php endif; ?>
+        
+        <a href="<?php echo esc_url(get_permalink($product_id)); ?>">
+            <img src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" class="product-image-movil-buytiti" data-src="<?php echo esc_url(wp_get_attachment_url($product_obj->get_image_id())); ?>" data-hover="<?php echo esc_url($second_image_url); ?>">
+            
+            <!-- Botón de agregar a favoritos -->
+            <div class="ti-wishlist-button">
+                <?php echo do_shortcode('[ti_wishlists_addtowishlist loop=yes product_id="' . $product_id . '"]'); ?>
+            </div>
+            
+            <div class="product-stock-buytiti-movil">Disponible: <?php echo esc_html($product_stock); ?></div>
+
+            <div class="product-info">
+                <!-- Mover el precio del producto aquí -->
+                <span class="<?php echo esc_attr($price_class); ?>"><?php echo wp_kses_post($display_price); ?></span>
+
+                <!-- Mostrar el SKU después del precio -->
+                <span class="<?php echo esc_attr($sku_class); ?>">SKU: <?php echo esc_html($product_sku); ?></span>
+
+                <!-- Mostrar la marca y la categoría -->
+                <div class="product-brand-category">
+                    <?php echo esc_html($brand); ?> - <?php echo esc_html($deepest_category); ?>
+                </div>
+                <h3 class="<?php echo esc_attr($product_name_class); ?>"><?php echo esc_html($product_name); ?></h3>
+            </div>
+        </a>
+        
+        <!-- Mostrar el número de ventas -->
+        <?php if ($atts['bestsellers'] === 'true') : ?>
+            <div class="product-sold-count">Vendidos: <?php echo esc_html($total_sales); ?></div>
+        <?php endif; ?>
+
+        <form class="add-to-cart-form" method="post">
+            <input type="hidden" name="add-to-cart" value="<?php echo esc_attr($product_id); ?>">
+            <input type="number" class="quantity-input" name="quantity" value="1" min="1" max="<?php echo esc_attr($product_stock); ?>">
+            <button type="submit" class="add-to-cart-button">Añadir al carrito</button>
+        </form>
+    </div>
+<?php endforeach; ?>
     </div>
 
     <script>
@@ -726,6 +739,24 @@ if ($product_obj->get_sale_price()) {
                 slidesToShow: 6,
                 slidesToScroll: 1,
                 responsive: [
+                    {
+                        breakpoint: 1590,
+                        settings: {
+                            slidesToShow: 5,
+                            slidesToScroll: 1,
+                            infinite: true, 
+                            autoplay: true, 
+                        }
+                    },
+                    {
+                        breakpoint: 1366,
+                        settings: {
+                            slidesToShow: 4,
+                            slidesToScroll: 1,
+                            infinite: true, 
+                            autoplay: true, 
+                        }
+                    },
                     {
                         breakpoint: 1024,
                         settings: {
