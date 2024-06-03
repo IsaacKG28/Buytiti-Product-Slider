@@ -136,30 +136,28 @@ function buytiti_enqueue_scripts_to_slider() {
           }
           
           .product-discount-buytiti {
-    position: absolute;
-    top: 6.5%;
-    right: 0;
-    background-color: coral;
-    color: #ffffff;
-    padding: 3px;
-    z-index: 1;
-    font-size: .9rem;
-    font-weight: 600;
-    border-radius: 0px 0px 0px 10px;
-    width: 3rem;
-}
+            height: 1.2rem;
+            margin-left: .5rem;
+            background-color: #ffe3e3;
+            color: #ff0044;
+            padding: 1px;
+            font-size: .7rem;
+            font-weight: 900;
+            width: 2rem;
+            display: inline-block;
+        }
 
 		.product-sale-price{
 			font-size: 1.2rem;
 			font-weight: 700;
-			color: red;
+			color: #f07E28;
 		}
         .product-image-movil-buytiti {
             margin-right: auto;
-            max-width: 180px !important;
+            width: 140px !important;
             height: auto;
-            max-height: 180px !important;
-            margin-top: 1.2rem !important;
+            height: 140px !important;
+            margin-top: .1rem !important;
             transition: 1s;
             margin-bottom: 2rem !important;
             transition: 1s;
@@ -174,8 +172,7 @@ function buytiti_enqueue_scripts_to_slider() {
         .buytiti-product {
 			position: relative;
 			text-align: left; /* Centrar el contenido */
-			border: 1px solid #ddd; /* Bordes para los productos */
-			border-radius: 20px;
+
 			height: 30.5rem;
 			width: 14.5rem;
 			width: 100%; /* Configurar el ancho para que ocupe todo el espacio disponible */
@@ -188,102 +185,14 @@ function buytiti_enqueue_scripts_to_slider() {
         .product-info {
             margin-bottom: 10px.
         }
-
-        .product-new-label {
-			position: absolute; 
-			top: 0; 
-			left: 0; 
-			z-index: 1;
-			background-color: #f2fff6;
-			border: 1px solid #058427;
-			border-radius: 20px 0px 0px 0px;    
-			color: #058427;
-			width: 4rem;
-			font-size: 1rem;
-        }
-
-        .product-sale-label {
-            position: absolute;
-    top: 0;
-    right: 0;
-    background-color: #ff0000;
-    color: #ffffff;
-    padding: 3px;
-    z-index: 1;
-    font-size: .9rem;
-    font-weight: 600;
-    border-radius: 0px 20px 0px 0px;
-        }
-
-		.product-sale-label.live-offer-label{
-			position: absolute;
-			top: 0;
-			right: 0;
-			background-color: #F7CACA;
-			color: red;
-			padding: 3px;
-			z-index: 1;
-			font-size: .9rem;
-			font-weight: 700;
-			border-radius: 0px 20px 0px 10px;
-			width: 8.5rem;
-		}
-
-        .product-sale-label.live-offer-label::before{
-			content: '•'; /* El punto */
-			position: absolute;
-			left: 0; /* Alineado a la izquierda */
-			top: -5%; /* Centrar verticalmente */
-			transform: translateY(-50%); /* Ajustar para centrar */
-			color: red; /* Color del punto */
-			animation: pulse 1s infinite; /* Aplica la animación de pulso */
-			font-size: 2rem;
-			margin-left: -.2rem;
-			padding-left: .2rem;
-		}
-
-		@keyframes pulse {
-			0% {
-				transform: scale(1);
-				opacity: 1;
-			}
-			50% {
-				transform: scale(1.2); /* Aumenta el tamaño */
-				opacity: 0.7; /* Reduce la opacidad */
-			}
-			100% {
-				transform: scale(1);
-				opacity: 1; /* Vuelve al estado original */
-			}
-		}
-
-		.product-sale-label.clearance-label{
-            position: absolute;
-            top: 0;
-            right: 0;
-            background-color: #e4c311; 
-            color: #ffffff; 
-            padding: 3px;
-            z-index: 1;  
+        .product-stock-buytiti-movil {
+            color: #a9a6a6 !important;
             font-size: .9rem;
             font-weight: 700;
-            border-radius: 0px 20px 0px 10px;
-		}
-
-		.product-stock-buytiti-movil{
-			background-color: #fde5cb;
-			border: 1px solid #ff7942;
-			border-radius: 15px 0 0 15px;
-			color: coral;
-			font-size: .6rem;
-			font-weight: 700;
-			right: 0;
-			padding: 0 3px;
-			width: 5.2rem;
-			position: absolute;
-			top: 43%;
-            display: none; 
-		}
+            padding: 0 3px;
+            width: 8rem;
+            position: absolute;
+        }
 
 		.product-sku-movil{
             color: black;
@@ -379,23 +288,72 @@ function buytiti_enqueue_scripts_to_slider() {
               
         }
         
-         @media screen and (min-width: 301px) and (max-width: 420px) {
+         @media screen and (min-width: 301px) and (max-width: 460px) {
                   .buytiti-product {
-			            height: 33.5rem !important;
+			            height: 31.5rem !important;
                   }
                   
                   .add-to-cart-button {
                       width: 7.6rem;
                       font-size: .8rem;
                   }
-                  .product-discount-buytiti {
-                         top: 2.5rem;
-                   }
                    .quantity-input {
                     height: 2.2rem !important;
-                    min-height: none !important
-                    width: 60px ;
+                    min-height: 1px !important;
+                    width: 60px !important;
                 }
+                .slick-prev.slick-arrow {
+                    background-color: #5c5c5c !important;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    margin-top: .7rem;
+                    top: 15% !important;
+                }
+                .slick-next.slick-arrow {
+                    background-color: #5c5c5c !important;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                    margin-top: .7rem;
+                    top: 15% !important;
+                }
+                .product-discount-buytiti {
+                    height: 1.2rem;
+                    margin-left: .5rem;
+                    background-color: #ffe3e3;
+                    color: #ff0044;
+                    padding: 1px;
+                    font-size: .7rem;
+                    font-weight: 900;
+                    width: 2rem;
+                    display: inline-block;
+                }
+        
+                .product-sale-price{
+                    font-size: 1.2rem;
+                    font-weight: 700;
+                    color: #f07E28;
+                }
+                .product-image-movil-buytiti {
+                    margin-right: auto;
+                    width: 140px !important;
+                    height: auto;
+                    height: 140px !important;
+                    margin-top: .1rem !important;
+                    transition: 1s;
+                    margin-bottom: 2rem !important;
+                    transition: 1s;
+                    margin-left: auto;
+                }
+                .product-brand-category {
+                    margin-bottom: .3rem;
+                    height: 1.4rem;
+                }
+                .product-sku-movil {
+                    height: 3rem !important;
+                    display: block !important;
+                    margin-top: -.45rem;
+                }
+            }
                   
         }
         /* Estilos para la etiqueta de Vendidos */
@@ -481,6 +439,24 @@ function buytiti_enqueue_scripts_to_slider() {
                 display: none;
             }
         }
+        @media only screen and (max-width: 428px) {
+            .ast-modern-checkout .woocommerce #payment ul.payment_methods > li:not(.woocommerce-info) {
+                width: 340px !important; 
+            }
+            #wc-stripe-upe-form {
+            padding: 30px;
+            border-radius: 4px;
+            width: 330px;
+            }
+            .woocommerce-SavedPaymentMethods-saveNew.woocommerce-validated {
+                width: 150px;
+              }
+            .ast-header-break-point #ast-mobile-header {
+                display: block;
+                margin-top: -8px !important;
+            }
+        }
+        
     ";
 
     // Añadir estilos en línea después de Slick CSS
@@ -626,16 +602,19 @@ $price_class = ''; // Variable para la clase CSS del precio
 
 // Verificar si hay un precio de venta
 if ($sale_price && $regular_price) {
-    // Mostrar el precio regular tachado
-    $display_price .= '<span class="product-regular-price-tachado">' . wc_price($regular_price) . '</span>';
-
     // Mostrar el precio de venta
     $display_price .= ' <span class="product-sale-price">' . wc_price($sale_price) . '</span>';
+ 
+    // Mostrar el precio regular tachado
+    $display_price .= '<span class="product-regular-price-tachado">' . wc_price($regular_price) . '</span>';
+       
+    // Calcular el porcentaje de descuento
+    $descuento = ( ($regular_price - $sale_price) / $regular_price ) * 100;
+    $display_price .= ' <span class="product-discount-buytiti">-' . round($descuento) . '%</span>';
 } else {
     // Si no hay precio de venta, mostrar solo el precio regular sin tachado
     $display_price = '<span class="product-regular-price">' . wc_price($regular_price) . '</span>';
 }
-
 // Asignar clase CSS según si el producto tiene precio de venta o no
 $price_class = ($sale_price) ? 'product-price-on-sale' : 'product-price-regular';
 
@@ -655,29 +634,25 @@ $price_class = ($sale_price) ? 'product-price-on-sale' : 'product-price-regular'
 $sale_label = '';
 $sale_class = ''; // Para mantener la clase CSS que corresponde a la etiqueta
 
-if ($product_obj->get_sale_price()) {
-    if (has_term('Ofertas en Vivo', 'product_cat', $product_id)) {
-        $sale_label = 'Ofertas en Vivo';
-        $sale_class = 'live-offer-label'; // Clase CSS para "Ofertas en Vivo"
-    } elseif (has_term('LIQUIDACIONES', 'product_cat', $product_id)) {
-        $sale_label = 'LIQUIDACIÓN';
-        $sale_class = 'clearance-label'; // Clase CSS para "LIQUIDACIÓN"
-    } else {
-        $sale_label = 'Oferta';
-        $sale_class = 'default-sale-label'; // Clase CSS para una oferta estándar
-    }
-}
+// if ($product_obj->get_sale_price()) {
+//     if (has_term('Ofertas en Vivo', 'product_cat', $product_id)) {
+//         $sale_label = 'Ofertas en Vivo';
+//         $sale_class = 'live-offer-label'; // Clase CSS para "Ofertas en Vivo"
+//     } elseif (has_term('LIQUIDACIONES', 'product_cat', $product_id)) {
+//         $sale_label = 'LIQUIDACIÓN';
+//         $sale_class = 'clearance-label'; // Clase CSS para "LIQUIDACIÓN"
+//     } else {
+//         $sale_label = 'Oferta';
+//         $sale_class = 'default-sale-label'; // Clase CSS para una oferta estándar
+//     }
+// }
 			   // Si el producto tiene un precio de venta y un precio regular, calcular el porcentaje de descuento
 			   $sale_price = $product_obj->get_sale_price();
 			   $regular_price = $product_obj->get_regular_price();
-			   if ( $sale_price && $regular_price > 0 ) {
-				   $descuento = ( ( $regular_price - $sale_price ) / $regular_price ) * 100;
-				   $display_price .= ' <span class="product-discount-buytiti">-' . round($descuento) . '%</span>'; // Etiqueta de descuento
-				}
                 // Obtener el número de ventas del producto
                 $total_sales = get_post_meta($product_id, 'total_sales', true);
             ?>
-    <div class="buytiti-product">
+ <div class="buytiti-product">
         <?php if ($atts['bestsellers'] === 'true') : ?>
             <img src="https://i0.wp.com/buytiti.com/wp-content/uploads/insignia.png?w=3000&ssl=1" alt="Insignia" class="product-badge-image" />
         <?php elseif ($is_new) : ?>
@@ -698,20 +673,26 @@ if ($product_obj->get_sale_price()) {
                 <?php echo do_shortcode('[ti_wishlists_addtowishlist loop=yes product_id="' . $product_id . '"]'); ?>
             </div>
             
-            <div class="product-stock-buytiti-movil">Disponible: <?php echo esc_html($product_stock); ?></div>
-
             <div class="product-info">
                 <!-- Mover el precio del producto aquí -->
-                <span class="<?php echo esc_attr($price_class); ?>"><?php echo wp_kses_post($display_price); ?></span>
+                <span class="<?php echo esc_attr($price_class); ?>">
+                    <?php echo wp_kses_post($display_price); ?>
+                   
+                </span>
 
                 <!-- Mostrar el SKU después del precio -->
                 <span class="<?php echo esc_attr($sku_class); ?>">SKU: <?php echo esc_html($product_sku); ?></span>
 
                 <!-- Mostrar la marca y la categoría -->
                 <div class="product-brand-category">
-                    <?php echo esc_html($brand); ?> - <?php echo esc_html($deepest_category); ?>
+                    <?php echo esc_html($brand); ?>
                 </div>
+                
+                <!-- Nombre del producto -->
                 <h3 class="<?php echo esc_attr($product_name_class); ?>"><?php echo esc_html($product_name); ?></h3>
+                
+                <!-- Disponibilidad del producto, movida aquí -->
+                <div class="product-stock-buytiti-movil">Disponible: <?php echo esc_html($product_stock); ?></div>
             </div>
         </a>
         
